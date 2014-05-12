@@ -1,0 +1,17 @@
+# don't save compiled objects
+*.o
+
+# don't save logs and backups
+*~
+lib/secure/save/backup/
+lib/log
+lib/secure/log
+
+# don't save builder areas
+lib/realms/
+
+# don't save temp files
+lib/daemon/tmp
+lib/tmp
+.*.swp
+

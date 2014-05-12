@@ -78,6 +78,11 @@ private int array       Coords          = ({});
 private string array    Neighbors       = ({});
 private mixed array     NeighborCoords  = ({});
 
+/* for format_desc() */
+int terminal_width = 70;
+int leading_indent_width = 3;
+int inner_indent_width = 0;
+
 string GetClimate();
 int GetNightLight();
 int GetDayLight();
@@ -224,7 +229,7 @@ static string GetExtraLong(){
     object array stuff;
     ret = "  ";
     tmp = ({});
-    stuff=all_inventory(this_object()); 
+    stuff=all_inventory(this_object());
     for(i=0; i<sizeof(stuff);i++){
         if(sizeof(tmp = ({ stuff[i]->GetRoomAffectLong() })) ) l += tmp;
     }
@@ -268,9 +273,9 @@ string SetNightLong(string str){ return (NightLong = str); }
 
 string GetNightLong(){ return NightLong; }
 
-string SetClimate(string str){ 
+string SetClimate(string str){
     if(str == "indoors" && TerrainType == T_OUTDOORS) TerrainType = T_INDOORS;
-    return (Climate = str); 
+    return (Climate = str);
 }
 
 string GetClimate(){ return Climate; }
@@ -821,7 +826,7 @@ int CanAttack( object attacker, object who ){
         return 1;
     }
     attacker->RemoveHostile( who );
-    return 0; 
+    return 0;
 }
 
 varargs int eventShow(object who, string args){
@@ -830,7 +835,7 @@ varargs int eventShow(object who, string args){
     if( !(str = SEASONS_D->GetLong(args)) ){
         who->eventPrint("You do not see that there.");
         return 1;
-    } 
+    }
     who->eventPrint(str);
     eventPrint(who->GetName() + " looks at the " + args + ".", who);
 }
@@ -902,7 +907,7 @@ int eventMove(){ return 0; }
 varargs int eventPrint(string msg, mixed arg2, mixed arg3){
     object *targs;
     int msg_class;
-    targs = filter(all_inventory(), 
+    targs = filter(all_inventory(),
             (: $1->is_living() || $1->GeteventPrints() :));
 
     if( !arg2 && !arg3 ){
@@ -1110,7 +1115,7 @@ int GenerateObviousExits(){
     if(sizeof(GetEnters(1)-({0}))){
         foreach(string enter in this_object()->GetEnters(1)){
             enters += "enter "+enter;
-            if(member_array(enter,this_object()->GetEnters(1)) != 
+            if(member_array(enter,this_object()->GetEnters(1)) !=
                     sizeof(this_object()->GetEnters(1)) -1){
                 enters +=", ";
             }
@@ -1350,4 +1355,69 @@ string GetElevator(){
 string SetElevator(string str){
     if(str) Elevator = str;
     return Elevator;
+}
+
+varargs string format_desc(string raw, string *highlight, string highlight_color) {
+    string result = "";
+
+    string *paragraphs = rexplode(raw, "\n");
+    string leading_indent = "";
+    string inner_indent = "";
+
+
+    if(undefinedp(terminal_width) || terminal_width < 10) {
+        object tp = this_player();
+
+        terminal_width = 75;
+        if(!undefinedp(tp)) {
+            int sw = tp->GetScreen()[0];
+
+            if(!undefinedp(sw) && sw > 0) {
+                terminal_width = sw;
+            }
+        }
+    }
+
+    if(!undefinedp(leading_indent_width) && leading_indent_width > 0) {
+        leading_indent = sprintf("%-*.*s", leading_indent_width, leading_indent_width, " ");
+    }
+    if(!undefinedp(inner_indent_width) && inner_indent_width > 0) {
+        inner_indent = sprintf("%-*.*s", inner_indent_width, inner_indent_width, " ");
+    }
+
+    for(int i = 0; i < sizeof(paragraphs); i++) {
+        string p = paragraphs[i];
+
+        result += (i != 0 ? "" : "");
+        result += leading_indent + implode(explode(sprintf("%-=*s\n", terminal_width, p), "\n"), "\n" + inner_indent);
+        result += "\n";
+    }
+
+    if(!undefinedp(highlight)) {
+        if(undefinedp(highlight_color)) {
+            highlight_color = "%^BOLD%^%^YELLOW%^";
+        }
+
+        foreach(string h in highlight) {
+            string tmp = "";
+
+            tmp = replace_string(result, h, highlight_color + h + "%^RESET%^", 1);
+            if(tmp == result) {
+                if(strsrch(h, " ") != -1) {
+                    string *words = explode(h, " ");
+
+                    for(int i = 0; i < sizeof(words); i++) {
+                        string t = replace_string(h, " ", "\n", i+1, i+1);
+                        tmp = replace_string(result, t, highlight_color + t + "%^RESET%^", 1);
+                        if(tmp != result) {
+                            break;
+                        }
+                    }
+                }
+            }
+            result = tmp;
+        }
+    }
+
+    return result;
 }
