@@ -3,6 +3,7 @@
 
 # don't save logs and backups
 *~
+*.bak
 lib/secure/save/backup/
 lib/log
 lib/secure/log
@@ -14,4 +15,11 @@ lib/realms/
 lib/daemon/tmp
 lib/tmp
 .*.swp
+lib/open
+# lib/save
 
+# don't save binaries
+bin/addr_server
+bin/driver
+bin/portbind
+win32/driver.exe
