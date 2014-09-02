@@ -168,6 +168,10 @@ static void create() {
         RestoreObject(SaveFiles);
     }
     if(query_os_type() != "windows" && MASTER_D->GetPerfOK()){
+	/* erase the old data */
+	all_dirs = ({});
+	all_files = ({});
+	/* load the new data */
         catch( ReadDir("/") );
         if(!fun_d) fun_d = load_object(FUNCTION_D);
     }
