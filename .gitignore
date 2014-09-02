@@ -17,6 +17,7 @@ lib/tmp
 .*.swp
 lib/open
 # lib/save
+lib/save/kills
 
 # don't save binaries
 bin/addr_server
@@ -26,3 +27,45 @@ win32/driver.exe
 
 # don't save configuration
 bin/mudos.cfg
+
+# don't save fluffos intermediates
+fluffos-*/1.out
+fluffos-*/2.out
+fluffos-*/GNUmakefile
+fluffos-*/a.out
+fluffos-*/addr_server
+fluffos-*/applies.h
+fluffos-*/applies_table.c
+fluffos-*/cc.h
+fluffos-*/comptest
+fluffos-*/comptest.c
+fluffos-*/configuration
+fluffos-*/configure.h
+fluffos-*/driver
+fluffos-*/dtrace_compile
+fluffos-*/edit_source
+fluffos-*/efun_defs.c
+fluffos-*/efun_protos.h
+fluffos-*/efunctions.h
+fluffos-*/files
+fluffos-*/func_spec.cpp
+fluffos-*/grammar.tab.c
+fluffos-*/grammar.tab.h
+fluffos-*/grammar.y
+fluffos-*/insttest
+fluffos-*/local_options
+fluffos-*/make_func.tab.c
+fluffos-*/malloc.c
+fluffos-*/mallocwrapper.c
+fluffos-*/opc.h
+fluffos-*/opcodes.h
+fluffos-*/option_defs.c
+fluffos-*/options_incl.h
+fluffos-*/packages/GNUmakefile
+fluffos-*/packages/Makefile
+fluffos-*/packages/packages
+fluffos-*/packages/packages.a
+fluffos-*/portbind
+fluffos-*/system_libs
+fluffos-*/tmp/
+fluffos-*/y.tab.c
