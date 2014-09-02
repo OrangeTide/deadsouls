@@ -23,3 +23,6 @@ bin/addr_server
 bin/driver
 bin/portbind
 win32/driver.exe
+
+# don't save configuration
+bin/mudos.cfg
