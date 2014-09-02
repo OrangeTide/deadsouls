@@ -98,6 +98,12 @@
 #  else
 #    ifdef __alpha
 #      define ARCH "Linux/alpha"
+#    elif defined(__arm)
+#      define ARCH "Linux/arm"
+#    elif defined(__i386) || defined(__i486)
+#      define ARCH "Linux/x86"
+#    elif defined(__amd64)
+#      define ARCH "Linux/amd64"
 #    else
 #      define ARCH "Linux"
 #    endif
